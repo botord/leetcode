@@ -9,7 +9,6 @@
 #include<stdlib.h>
 
 
-
 typedef struct linkedListNode *plistNode;
 typedef struct linkedListNode {
     int index;
@@ -19,8 +18,7 @@ typedef struct linkedListNode {
 int *twoSum(int nums[], int numberSize, int target)
 {
     int index = 0;
-    //int hash_size = 1UL << 28;
-    int hash_size = 271;
+    int hash_size = 43853;
     int finded = 0;
 
     plistNode hashTable = (plistNode) malloc (sizeof(listNode) * hash_size);
@@ -36,43 +34,24 @@ int *twoSum(int nums[], int numberSize, int target)
 
     /*Assign nums into hashTable*/
     for (index=0; index<numberSize; index++) {
-        //int number = nums[index];
-        /*in case of minus number shows up*/
-        int number = (nums[index] + hash_size)%hash_size;
+        int number = ((nums[index]+hash_size)%hash_size);
         if (-1 == hashTable[number].index) {
             hashTable[number].index = index;
         } else {
-            //listNode *tail = (plistNode) malloc (sizeof(listNode));
-            //assert(tail);
-            //tail = hashTable[number].next;
             listNode *tail = hashTable[number].next;
             tail = (plistNode) malloc (sizeof(listNode));
-
             tail->index = index;
-//            printf("test: index = %d number = %d\n", index, number);
             tail->next = hashTable[number].next;
- //           printf("test: index = %d number = %d\n", index, number);
             hashTable[number].next = tail;
         }
     }
 
 
     int *ret = (int *) malloc (sizeof(int)*2);
-    /*test*/
-    /*for (index=0; index<numberSize; index++) {
-        int number = nums[index];
-        printf("hashTable[%d].index = %d\n", number, hashTable[number].index);
-    }
-    */
     /*search*/
     for (index=0; index<numberSize; index++) {
         int number = nums[index];
-        int find = (target - number + hash_size)%hash_size;
-        //printf("index = %d\n", index);
-        //printf("find = %d\n", find);
-        if (hashTable[find].index == -1) {
-            continue;
-        }
+        int find = ((target - number + hash_size)%hash_size);
         if (find == number) {
             if (hashTable[find].next != NULL) {
                 finded = 1;
