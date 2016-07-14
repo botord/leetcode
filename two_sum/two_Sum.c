@@ -35,7 +35,7 @@ int *twoSum(int nums[], int numberSize, int target)
 
     /*Assign nums into hashTable*/
     for (index=0; index<numberSize; index++) {
-        int number = ((nums[index]+hash_size)%hash_size);
+        int number = ((nums[index] + hash_size) % hash_size);
         if (-1 == hashTable[number].index) {
             hashTable[number].index = index;
         } else {
@@ -56,7 +56,6 @@ int *twoSum(int nums[], int numberSize, int target)
             *  (gdb) p hashTable[number].next 
             *  $33 = (plistNode) 0x0
             *
-            *
             * */
             tail->index = index;
             tail->next = hashTable[number].next;
@@ -69,7 +68,7 @@ int *twoSum(int nums[], int numberSize, int target)
     /*search*/
     for (index=0; index<numberSize; index++) {
         int number = nums[index];
-        int find = ((target - number + hash_size)%hash_size);
+        int find = ((target - number + hash_size) % hash_size);
         if (find == number) {
             if (hashTable[find].next != NULL) {
                 finded = 1;

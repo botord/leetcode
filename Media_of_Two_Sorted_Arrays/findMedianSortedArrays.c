@@ -9,7 +9,7 @@
 #include<stdlib.h>
 #define MIN(x,y) ((x<y)?x:y)
 
-/*find the Kth largest number in array a and b*/
+/*find the Kth smallest number in array a and b*/
 double findK(int *a, int a_size, int *b, int b_size, int k)
 {
     /*Make sure that length of a is always less than length of b*/
