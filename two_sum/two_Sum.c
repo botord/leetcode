@@ -39,24 +39,7 @@ int *twoSum(int nums[], int numberSize, int target)
         if (-1 == hashTable[number].index) {
             hashTable[number].index = index;
         } else {
-            listNode *tail = hashTable[number].next;
-            tail = (plistNode) malloc (sizeof(listNode));
-            /* 
-            * 这里有个大坑, tail一定要先声明然后再分配内存 如果反过来会报segment fault */
-            /* 因为先分配内存的话, 
-            *  listNode *tail = (plistNode) malloc (sizeof(listNode));
-            *  #(gdb) p tail
-            *  #$30 = (listNode *) 0x602010
-            *  分配以后
-            *  assert(tail);
-            *  tail = hashTable[number].next;
-            *  这句是赋值操作,执行完以后tail就变成hashTable[number].next里的内容了
-            *  (gdb) p hashTable[number] 
-            *  $32 = {index = 0, next = 0x0}
-            *  (gdb) p hashTable[number].next 
-            *  $33 = (plistNode) 0x0
-            *
-            * */
+            plistNode tail = (plistNode) malloc (sizeof(listNode));
             tail->index = index;
             tail->next = hashTable[number].next;
             hashTable[number].next = tail;
