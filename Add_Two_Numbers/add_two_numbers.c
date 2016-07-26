@@ -8,114 +8,106 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct linkedListNode *plistNode;
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
 
-typedef struct linkedListNode {
-    unsigned int data;
-    plistNode next;
-} ListNode;
 
-struct ListNode *addTwoNumbers(struct linkedListNode *l1, struct linkedListNode *l2)
-{
+struct ListNode *addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    int dump = 0;
     int i = 0;
     if (!l1 || !l2) {
         return NULL;
     }
-    /*不破坏源链表*/
-    ListNode *ll1 = l1;
-    ListNode *ll2 = l2;
 
-    ListNode *listnode1 = (ListNode *) malloc (sizeof(ListNode));
+    /*保留表头,使用ll1,ll2作为游标*/
+    struct ListNode *ll1 = l1;
+    struct ListNode *ll2 = l2;
+
+    struct ListNode *listnode1 = (struct ListNode *) malloc (sizeof(struct ListNode));
     if (!listnode1) {
         return NULL;
     }
-    /*保留表头,使用ll1,ll2作为游标*/
-    ListNode *h1 = listnode1;
-    listnode1->data = ll1->data;
+    struct ListNode *h1 = listnode1;
+    listnode1->val = ll1->val;
     listnode1->next = NULL;
     ll1 = ll1->next;
 
     while (ll1) {
-        ListNode *r1= (ListNode *) malloc (sizeof(ListNode));
+        struct ListNode *r1 = (struct ListNode *) malloc (sizeof(struct ListNode));
         if (!r1) {
             return NULL;
         }
-        r1->data = ll1->data;
-        r1->next = h1->next;
-        h1->next = r1;
+        r1->val = ll1->val;
+        r1->next = h1;
+        h1 = r1;
         ll1 = ll1->next;
     }
     
-    ListNode *h2 = ll2;
-    ListNode *listnode2 = (ListNode *)malloc(sizeof(ListNode));
+    struct ListNode *listnode2 = (struct ListNode *) malloc (sizeof(struct ListNode));
     if (!listnode2) {
         return NULL;
     }
-    listnode2->data = ll2->data;
+    listnode2->val = ll2->val;
     listnode2->next = NULL;
+    ll2 = ll2->next;
+    struct ListNode *h2 = listnode2;
 
     while (ll2) {
-        ListNode *r2= (ListNode *) malloc (sizeof(ListNode));
+        struct ListNode *r2= (struct ListNode *) malloc (sizeof(struct ListNode));
         if (!r2) {
             return NULL;
         }
-
-        r2->data = ll2->data;
-        r2->next = listnode2->next;
-        listnode2->next = r2;
+        r2->val = ll2->val;
+        r2->next = h2;
+        h2 = r2;
         ll2 = ll2->next;
     } 
-    ListNode *tmp;
+    struct ListNode *tmp;
 
-    tmp = listnode1;
-    i = 0;
-    printf("reverse list1\n");
-    while(tmp) {
-        printf("tmp[%d] = %d\n", i, tmp->data);
-        i++;
-        tmp = tmp->next; 
-    }
-
-    listnode2->data = listnode2->data;
-    tmp = listnode2;
-    i = 0;
-    printf("reverse list2\n");
-    while(tmp) {
-        printf("tmp[%d] = %d\n", i, tmp->data);
-        i++;
-        tmp = tmp->next; 
-    }
-
-    ListNode *res = (ListNode *)malloc(sizeof(ListNode));
+    ll1 = h1;
+    ll2 = h2;
+    struct ListNode *res = (struct ListNode *) malloc (sizeof(struct ListNode));
     if (!res) {
         return NULL;
     }
-    res->data = listnode1->data + listnode2->data;
+    ll1 = h1;
+    ll2 = h2;
+    res->val = h1->val + h2->val;
+    if (res->val >= 10) {
+        dump = 1;
+        res->val -= 10;
+    }
     res->next = NULL;
     tmp = res;
-    
-    while (listnode1->next && listnode2->next) {
-        ListNode *resNode = (ListNode *)malloc(sizeof(ListNode));
+
+    ll1 = ll1->next;
+    ll2 = ll2->next;
+
+    while (ll1 && ll2) {
+        struct ListNode *resNode = (struct ListNode *) malloc (sizeof(struct ListNode));
         if (!resNode) {
             return NULL;
         }
-        resNode->data = listnode1->next->data + listnode2->next->data;
+        resNode->val = ll1->val + ll2->val;
+        if (dump) {
+            resNode->val += 1;
+            dump = 0;
+        }
+        if (resNode->val >= 10) {
+            dump = 1;
+            resNode->val -= 10;
+        }
         resNode->next = NULL;
         tmp->next = resNode;
         tmp = tmp->next;
-        listnode1 = listnode1->next;
-        listnode2 = listnode2->next;
+        ll1 = ll1->next;
+        ll2 = ll2->next;
     }
-
-    tmp = res;
-    while(tmp) {
-        printf("%d\n", tmp->data);
-        tmp = tmp->next;
-    }
-    //return h1;
- 
+    
+    return res;
 }
-
 #define LENGTH 3
 void print(int *Array)
 {
@@ -137,23 +129,23 @@ int main()
     print(Array2);
     puts("");
 
-    ListNode *listnode1 = (ListNode *)calloc(1, sizeof(ListNode));
-    ListNode *listnode2 = (ListNode *)calloc(1, sizeof(ListNode));
+    struct ListNode *listnode1 = (struct ListNode *) calloc (1, sizeof(struct ListNode));
+    struct ListNode *listnode2 = (struct ListNode *) calloc (1, sizeof(struct ListNode));
 
     if (!listnode1 || !listnode2) {
         return -1;
     }
 
-    listnode1->data = 0;
-    listnode2->data = 0;
+    listnode1->val = 0;
+    listnode2->val = 0;
     listnode1->next = NULL;
     listnode2->next = NULL;
 
     /*尾插法建立单链表*/
-    ListNode *r = listnode1;
+    struct ListNode *r = listnode1;
     for (i=0; i<LENGTH; i++) {
-        ListNode *listnode = (ListNode *)malloc(sizeof(ListNode));
-        listnode->data = Array1[i];
+        struct ListNode *listnode = (struct ListNode *) malloc (sizeof(struct ListNode));
+        listnode->val = Array1[i];
         listnode->next = r->next;
         r->next = listnode;
         r = r->next;
@@ -161,18 +153,18 @@ int main()
 
     r = listnode2;
     for (i=0; i<LENGTH; i++) {
-        ListNode *listnode = (ListNode *)malloc(sizeof(ListNode));
-        listnode->data = Array2[i];
+        struct ListNode *listnode = (struct ListNode *) malloc (sizeof(struct ListNode));
+        listnode->val = Array2[i];
         listnode->next = r->next;
         r->next = listnode;
         r = r->next;
     }
 
     i = 0;
-    ListNode *tmp = listnode1->next;
+    struct ListNode *tmp = listnode1->next;
     printf("源链表1:\n");
     while(tmp) {
-        printf("listnode1[%d] = %d\n", i, tmp->data);
+        printf("listnode1[%d] = %d\n", i, tmp->val);
         i++;
         tmp = tmp->next; 
     }
@@ -181,12 +173,12 @@ int main()
     printf("源链表2:\n");
 
     while(tmp) {
-        printf("listnode2[%d] = %d\n", i, tmp->data);
+        printf("listnode2[%d] = %d\n", i, tmp->val);
         i++;
         tmp = tmp->next; 
     }
 
-    ListNode *res = addTwoNumbers(listnode1->next, listnode2->next);
+    struct ListNode *res = addTwoNumbers(listnode1->next, listnode2->next);
     return 0;
 
 }
