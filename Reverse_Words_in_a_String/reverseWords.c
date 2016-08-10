@@ -53,16 +53,51 @@ void reverseWords(char *s)
         }
         end++;
     }
-    printf("after reverse, s = %s\n", s);
+    printf("after reverse, s = %s|||\n", s);
     
     /*shorten s*/
+    /*去掉头部的空格*/
     start = end = 0;
+    while (s[end] != '\0') {
+        if (s[end] == ' ') {
+            end++;
+        } else {
+            break;
+        }
+    }
+    /* 字符串只有空格 */
+    if (s[end] == '\0') {
+        s[start] = '\0';
+    }
+
+    for (start = 0; end <= length; start++, end++) {
+        s[start] = s[end];
+    }
+    printf("after despace, s = %s|||\n", s);
+    
+    start = 1;
+    end = 1;
+    while (s[end] != '\0') {
+        if (s[end] != ' ' && s[end] != '\0') {
+            if (s[end-1] == ' ') {
+                s[start] = ' ';
+                start++;
+            }
+            s[start] = s[end];
+            start++;
+            end++;
+        } else {
+            end++;
+        } 
+    }
+    s[start] = '\0';
+    printf("finally, s = %s|||\n", s);
 
 }
 
 int main()
 {
-    char s[] = "the       skype is blue";
+    char s[] = "   3the       skype blue4    ";
     reverseWords(s);
 
 //    printf("s = %s\n", s);
