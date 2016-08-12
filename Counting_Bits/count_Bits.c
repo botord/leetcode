@@ -22,18 +22,36 @@ Follow up:
 */
 
 #include<stdio.h>
+#include<stdlib.h>
 
-int * countBits(int num, int *returnSize) {
+int *countBits(int num, int *returnSize) {
+    int *res = (int *) malloc ((num+1) * sizeof(int));
+    int i;
 
+    *returnSize = num+1;
+
+    res[0] = 0;
+    for (i=1; i<=num; i++) {
+        res[i] = res[i>>1] + (i&1);
+    }
+
+    return res;
 }
 
 int main()
 {
-    int num = 5;
-    int returnSize[num];
+    int num = 16;
+    int returnSize;
+    int i;
     
     int *p;
-    p = countBits(num, returnSize);
+    p = countBits(num, &returnSize);
+
+    for (i=0; i<returnSize; i++) {
+        printf("%d\n", *(p+i));
+    }
+
+    printf("returnSize = %d\n", returnSize);
 
     return 0;
 }
