@@ -38,6 +38,27 @@ int *countBits(int num, int *returnSize) {
     return res;
 }
 
+int *countBits_b (int num, int *returnSize) {
+    int *res = (int *) calloc (num+1, sizeof (int));
+    unsigned int i = 0;
+    unsigned int cursor = 0;
+    unsigned int power = 1;
+    
+    *returnSize = num + 1;
+    res[0] = 0;
+    for (i=1; i<=num; i++) {
+        if (i == power) {
+            power <<= 1;
+            cursor = 1;
+            res[i] = 1;
+        } else {
+            res[i] = res[cursor++] + 1;
+        }
+    }
+
+    return res;
+}
+
 int main()
 {
     int num = 16;
@@ -45,7 +66,7 @@ int main()
     int i;
     
     int *p;
-    p = countBits(num, &returnSize);
+    p = countBits_b(num, &returnSize);
 
     for (i=0; i<returnSize; i++) {
         printf("%d\n", *(p+i));
