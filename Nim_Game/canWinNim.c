@@ -10,5 +10,18 @@
 #include<stdbool.h>
 
 bool canWinNim (int n) {
+    if (n%4) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
+int main() {
+    bool res = canWinNim(1348820612);
+
+    if (res) {
+        printf("yes we can!\n");
+    }
+    return 0;
 }
