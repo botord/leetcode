@@ -18,14 +18,14 @@
 
 int get_Circle_Number(int, int [][2]);
 
-#define NUMBER_OF_RELATIONSHIP 7
+#define NUMBER_OF_RELATIONSHIP 8
 #define NUMBER_OF_PEOPLE 9
 
 void main()
 {
     int n = 9;
 
-    int relationship[NUMBER_OF_RELATIONSHIP][2] = {{1,3},{3,4},{2,5},{6,8},{8,9},{1,5},{2,6}};
+    int relationship[NUMBER_OF_RELATIONSHIP][2] = {{1,3},{3,4},{2,5},{6,8},{8,9},{1,5},{2,6},{5,7}};
 
     int ret = get_Circle_Number(NUMBER_OF_PEOPLE,relationship);
 
@@ -75,12 +75,6 @@ int get_Circle_Number(int n, int relationship[][2]) {
         father[i] = i;
     }
 
-    for (i=1; i<NUMBER_OF_PEOPLE+1; i++) {
-        printf("father[%d] = %d\n", i, father[i]);
-    }
-
-    puts("");
-
     for (i=0; i<NUMBER_OF_RELATIONSHIP; i++) {
         merge(father, relationship[i]);
     }
@@ -89,7 +83,7 @@ int get_Circle_Number(int n, int relationship[][2]) {
         printf("father[%d] = %d\n", i, father[i]);
     }
 
-    for (i=1; i<NUMBER_OF_PEOPLE; i++) {
+    for (i=1; i<NUMBER_OF_PEOPLE+1; i++) {
         if (father[i] == i) {
             count++;
         }
